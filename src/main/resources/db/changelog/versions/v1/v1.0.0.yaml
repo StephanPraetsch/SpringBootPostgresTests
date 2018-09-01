@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1.0.0
+      author: stephan.praetsch
+      changes:
+        - createTable:
+            tableName: USER
+            columns:
+              - column:
+                  name: ID
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: NAME
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: BIRTH
+                  type: timestamp
