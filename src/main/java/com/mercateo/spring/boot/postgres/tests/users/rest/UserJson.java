@@ -1,10 +1,11 @@
-package com.mercateo.spring.boot.postgres.tests.users;
+package com.mercateo.spring.boot.postgres.tests.users.rest;
 
 import java.time.OffsetDateTime;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.mercateo.rest.jersey.utils.listing.IdProvider;
-import com.mercateo.spring.boot.postgres.tests.persistence.UserDto;
+import com.mercateo.spring.boot.postgres.tests.users.UserId;
+import com.mercateo.spring.boot.postgres.tests.users.persistence.UserDto;
 
 import lombok.NonNull;
 import lombok.Value;

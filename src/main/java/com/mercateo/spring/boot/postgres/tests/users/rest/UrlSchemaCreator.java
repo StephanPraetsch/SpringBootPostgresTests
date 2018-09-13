@@ -1,4 +1,4 @@
-package com.mercateo.spring.boot.postgres.tests.users;
+package com.mercateo.spring.boot.postgres.tests.users.rest;
 
 import java.util.Collections;
 

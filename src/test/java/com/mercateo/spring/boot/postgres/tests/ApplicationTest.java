@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.mercateo.spring.boot.postgres.tests.users.UsersService;
+import com.mercateo.spring.boot.postgres.tests.users.persistence.UsersService;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")

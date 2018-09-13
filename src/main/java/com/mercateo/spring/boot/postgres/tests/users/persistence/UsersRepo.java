@@ -1,4 +1,4 @@
-package com.mercateo.spring.boot.postgres.tests.persistence;
+package com.mercateo.spring.boot.postgres.tests.users.persistence;
 
 import java.util.UUID;
 

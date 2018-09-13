@@ -7,7 +7,7 @@ import javax.ws.rs.core.Link;
 
 import com.mercateo.common.rest.schemagen.types.HyperSchemaCreator;
 import com.mercateo.common.rest.schemagen.types.ObjectWithSchema;
-import com.mercateo.spring.boot.postgres.tests.users.UsersLinkCreator;
+import com.mercateo.spring.boot.postgres.tests.users.rest.UsersLinkCreator;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

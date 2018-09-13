@@ -1,4 +1,4 @@
-package com.mercateo.spring.boot.postgres.tests.users;
+package com.mercateo.spring.boot.postgres.tests.users.rest;
 
 import static com.mercateo.common.rest.schemagen.util.OptionalUtil.collect;
 
@@ -27,6 +27,8 @@ import com.mercateo.common.rest.schemagen.types.ObjectWithSchema;
 import com.mercateo.rest.jersey.utils.listing.AbstractListingResourceWithGenericId;
 import com.mercateo.rest.jersey.utils.listing.IdParameterBean;
 import com.mercateo.rest.jersey.utils.listing.SearchQueryParameterBean;
+import com.mercateo.spring.boot.postgres.tests.users.UserId;
+import com.mercateo.spring.boot.postgres.tests.users.persistence.UsersService;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;

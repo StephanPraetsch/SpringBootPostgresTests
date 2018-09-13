@@ -1,4 +1,4 @@
-package com.mercateo.spring.boot.postgres.tests.users;
+package com.mercateo.spring.boot.postgres.tests.users.persistence;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
-import com.mercateo.spring.boot.postgres.tests.persistence.UserDto;
-import com.mercateo.spring.boot.postgres.tests.persistence.UsersRepo;
+import com.mercateo.spring.boot.postgres.tests.users.User;
+import com.mercateo.spring.boot.postgres.tests.users.UserId;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

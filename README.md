@@ -7,6 +7,8 @@
   * integration tests with REST
   * LiquiBase
   * Java8 OffsetDateTime in database
+  * unit tests
+  * AssertJ
 
 # hateoas
 see [HATEOAS.md](HATEOAS.md)

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import com.mercateo.common.rest.schemagen.JerseyResource;
 import com.mercateo.rest.jersey.utils.exception.RFCExceptionMapper;
 import com.mercateo.spring.boot.postgres.tests.root.RootResource;
-import com.mercateo.spring.boot.postgres.tests.users.UsersResource;
+import com.mercateo.spring.boot.postgres.tests.users.rest.UsersResource;
 
 @Configuration
 public class JerseyConfiguration extends ResourceConfig {

@@ -1,4 +1,4 @@
-package com.mercateo.spring.boot.postgres.tests.users;
+package com.mercateo.spring.boot.postgres.tests.users.rest;
 
 import com.mercateo.common.rest.schemagen.link.relation.RelType;
 import com.mercateo.common.rest.schemagen.link.relation.Relation;

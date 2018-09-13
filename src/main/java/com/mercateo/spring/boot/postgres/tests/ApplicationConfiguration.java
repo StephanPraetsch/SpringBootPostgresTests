@@ -14,7 +14,7 @@ import com.mercateo.common.rest.schemagen.link.LinkMetaFactory;
 import com.mercateo.common.rest.schemagen.plugin.FieldCheckerForSchema;
 import com.mercateo.common.rest.schemagen.plugin.MethodCheckerForLink;
 import com.mercateo.rest.schemagen.spring.JerseyHateoasConfiguration;
-import com.mercateo.spring.boot.postgres.tests.users.UsersResource;
+import com.mercateo.spring.boot.postgres.tests.users.rest.UsersResource;
 
 @Configuration
 @Import({ JerseyHateoasConfiguration.class })
