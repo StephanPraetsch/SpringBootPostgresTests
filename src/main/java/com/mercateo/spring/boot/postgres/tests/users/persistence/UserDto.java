@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.mercateo.spring.boot.postgres.tests.users.User;
+import com.mercateo.spring.boot.postgres.tests.users.UserId;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +31,10 @@ public class UserDto {
 
     public static UserDto fromUser(@NonNull User user) {
         return new UserDto(user.getId().getValue(), user.getName(), user.getBirth());
+    }
+
+    public User toUser() {
+        return new User(new UserId(id), name, birth);
     }
 
 }
