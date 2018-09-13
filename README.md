@@ -29,8 +29,7 @@ GET http://localhost:8080/users/ba2fb9f3-6bab-4202-bb7b-f73872ae3629
         "links": [
             {
                 "href": "http://localhost:8080/users/ba2fb9f3-6bab-4202-bb7b-f73872ae3629",
-                "targetSchema": { ... }
-                },
+                "targetSchema": { ... },
                 "rel": "self",
                 "mediaType": "application/json",
                 "method": "GET"
