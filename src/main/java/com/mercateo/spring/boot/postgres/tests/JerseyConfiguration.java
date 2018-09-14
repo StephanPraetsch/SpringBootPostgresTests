@@ -22,7 +22,6 @@ public class JerseyConfiguration extends ResourceConfig {
         register(JacksonFeature.class);
 
         register(RFCExceptionMapper.class);
-        // register(RoleRequestFilter.class); TODO add this here?!
 
         property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
 
