@@ -27,7 +27,6 @@ import com.mercateo.spring.boot.postgres.tests.TestApplication;
 import com.mercateo.spring.boot.postgres.tests.users.User;
 import com.mercateo.spring.boot.postgres.tests.users.UserId;
 import com.mercateo.spring.boot.postgres.tests.users.persistence.UsersService;
-import com.mercateo.spring.boot.postgres.tests.users.rest.CreateUserJson.CreateUserJsonBuilder;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -53,10 +52,20 @@ public class UsersResourceTest {
         restTemplate.getRestTemplate().setInterceptors(Collections.emptyList());
     }
 
-    private CreateUserJsonBuilder defaultCreateJson() {
-        return CreateUserJson.builder().id(UUID.fromString("1-1-1-1-1"))
+    private CreateUserJson createJson(String name) {
+        return CreateUserJson.builder()
+                .id(UUID.fromString("1-1-1-1-1"))
+                .name(name)
+                .birth(OffsetDateTime.of(2018, 9, 14, 12, 10, 51, 0, ZoneOffset.UTC))
+                .build();
+    }
+
+    private CreateUserJson createJson(UUID id) {
+        return CreateUserJson.builder()
+                .id(id)
                 .name("name")
-                .birth(OffsetDateTime.of(2018, 9, 14, 12, 10, 51, 0, ZoneOffset.UTC));
+                .birth(OffsetDateTime.of(2018, 9, 14, 12, 10, 51, 0, ZoneOffset.UTC))
+                .build();
     }
 
     private ResponseEntity<String> post(CreateUserJson json) {
@@ -102,7 +111,7 @@ public class UsersResourceTest {
     public void test_create() throws Exception {
 
         // given
-        CreateUserJson json = defaultCreateJson().build();
+        CreateUserJson json = createJson("test_create");
 
         // when
         ResponseEntity<String> response = post(json);
@@ -168,7 +177,7 @@ public class UsersResourceTest {
 
         // given
 
-        CreateUserJson json = defaultCreateJson().build();
+        CreateUserJson json = createJson("test_create_twice_the_same");
         post(json);
 
         // when
@@ -186,9 +195,8 @@ public class UsersResourceTest {
     public void test_create_id_in_path_differs_from_json() throws Exception {
 
         // given
-        CreateUserJson json = defaultCreateJson()
-                .id(UUID.fromString("99999999-9999-9999-9999-999999999999"))
-                .build();
+        CreateUserJson json = createJson(UUID.fromString(
+                "99999999-9999-9999-9999-999999999999"));
 
         // when
         ResponseEntity<String> response = restTemplate.postForEntity(
