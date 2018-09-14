@@ -23,7 +23,7 @@ POST http://localhost:8080/users/ba2fb9f3-6bab-4202-bb7b-f73872ae3629
 GET http://localhost:8080/users/ba2fb9f3-6bab-4202-bb7b-f73872ae3629
 ```json
 {
-    "value": "ba2fb9f3-6bab-4202-bb7b-f73872ae3629",
+    "id": "ba2fb9f3-6bab-4202-bb7b-f73872ae3629",
     "name": "John Doe",
     "_schema": {
         "links": [

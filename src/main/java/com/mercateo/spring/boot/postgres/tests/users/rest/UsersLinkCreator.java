@@ -31,7 +31,7 @@ public class UsersLinkCreator {
 
     Optional<Link> getUpdateLink(UserId userId) {
         return linkFactory.forCall(
-                Rel.UPDATE, r -> r.update(new IdParameterBean(userId.getValue().toString()), null));
+                Rel.UPDATE, r -> r.update(new IdParameterBean(userId.getId().toString()), null));
     }
 
     public List<Link> getLinksToUsers() {

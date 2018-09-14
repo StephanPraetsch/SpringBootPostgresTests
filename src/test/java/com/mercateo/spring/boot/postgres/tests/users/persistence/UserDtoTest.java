@@ -29,7 +29,7 @@ public class UserDtoTest {
         UserDto result = UserDto.fromUser(user);
 
         // then
-        assertThat(result.getId()).isEqualTo(id.getValue());
+        assertThat(result.getId()).isEqualTo(id.getId());
         assertThat(result.getName()).isEqualTo(name);
         assertThat(result.getBirth()).isEqualTo(odt);
 

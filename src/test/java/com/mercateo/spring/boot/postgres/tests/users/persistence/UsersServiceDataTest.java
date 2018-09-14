@@ -41,7 +41,7 @@ public class UsersServiceDataTest {
 
     private UserDto userDto(UserId userId, String name) {
         OffsetDateTime birth = OffsetDateTime.of(2018, 9, 13, 17, 15, 33, 0, ZoneOffset.UTC);
-        return new UserDto(userId.getValue(), name, birth);
+        return new UserDto(userId.getId(), name, birth);
     }
 
     @Test

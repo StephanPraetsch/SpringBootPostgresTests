@@ -95,7 +95,7 @@ public class UsersServiceTest {
     public void testGetFor() throws Exception {
 
         // given
-        when(users.findById(id.getValue())).thenReturn(Optional.of(userDto));
+        when(users.findById(id.getId())).thenReturn(Optional.of(userDto));
 
         // when
         Optional<UserDto> result = uut.getFor(id);

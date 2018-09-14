@@ -107,7 +107,7 @@ public class UsersResource extends
 
         UserId userId = tryToConvertId(id.getId());
 
-        sanityIdCheck(id, json.getId().getValue());
+        sanityIdCheck(id, json.getId().getId());
 
         log.info("update " + userId);
 

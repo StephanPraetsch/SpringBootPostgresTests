@@ -30,7 +30,7 @@ public class UserDto {
     OffsetDateTime birth;
 
     public static UserDto fromUser(@NonNull User user) {
-        return new UserDto(user.getId().getValue(), user.getName(), user.getBirth());
+        return new UserDto(user.getId().getId(), user.getName(), user.getBirth());
     }
 
     public User toUser() {

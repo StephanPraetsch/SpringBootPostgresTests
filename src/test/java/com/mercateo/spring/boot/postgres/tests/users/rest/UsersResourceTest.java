@@ -24,7 +24,11 @@ import com.mercateo.spring.boot.postgres.tests.EmbeddedPostgresForWebTest;
 import com.mercateo.spring.boot.postgres.tests.TestApplication;
 import com.mercateo.spring.boot.postgres.tests.users.User;
 import com.mercateo.spring.boot.postgres.tests.users.UserId;
+import com.mercateo.spring.boot.postgres.tests.users.persistence.UsersService;
 import com.mercateo.spring.boot.postgres.tests.users.rest.CreateUserJson.CreateUserJsonBuilder;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -34,6 +38,9 @@ public class UsersResourceTest {
 
     @Inject
     private TestRestTemplate restTemplate;
+
+    @Inject
+    private UsersService userService;
 
     @After
     public void after() {
@@ -60,14 +67,14 @@ public class UsersResourceTest {
 
     private void put(UpdateUserJson json) {
         restTemplate.put(
-                "/users/" + json.getId(),
+                "/users/" + json.getId().getId(),
                 json);
     }
 
-    private ResponseEntity<User> get(UserId id) {
+    private ResponseEntity<ResponseUserJson> get(UserId id) {
         return restTemplate.getForEntity(
-                "/users/" + id.getValue(),
-                User.class);
+                "/users/" + id.getId(),
+                ResponseUserJson.class);
     }
 
     @Test
@@ -87,6 +94,7 @@ public class UsersResourceTest {
     }
 
     @Test
+    @DirtiesContext
     public void test_create() throws Exception {
 
         // given
@@ -99,25 +107,51 @@ public class UsersResourceTest {
         assertThat(response.getStatusCode())
                 .as(response.getBody())
                 .isEqualTo(HttpStatus.OK);
+        assertThat(userService.getAll()).hasSize(1);
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class ResponseUserJson {
+        UUID id;
+
+        String name;
+    }
+
+    @Test
+    @DirtiesContext
+    public void test_get() throws Exception {
+
+        // given
+        UserId id = new UserId(UUID.fromString("1-1-1-1-2"));
+        User user = new User(id, "test_get", OffsetDateTime.now());
+        userService.create(user);
+
+        // when
+        ResponseEntity<ResponseUserJson> response = get(id);
+
+        // then
+        assertThat(response.getBody())
+                .isEqualTo(new ResponseUserJson(id.getId(), "test_get"));
 
     }
 
     @Test
-    public void test_create_and_get() throws Exception {
+    @DirtiesContext
+    public void test_update() throws Exception {
 
         // given
         UserId id = new UserId(UUID.fromString("1-1-1-1-2"));
-        post(defaultCreateJson().id(id.getValue()).build());
+        User user = new User(id, "test_update", OffsetDateTime.now());
+        userService.create(user);
 
         // when
         put(UpdateUserJson.builder().id(id).name("different name").build());
 
         // then
-        ResponseEntity<User> response = get(id);
-        assertThat(response)
-                .isEqualTo(HttpStatus.OK)
-                .extracting(r -> (User) r.getBody())
-                .isEqualTo("different name");
+        assertThat(userService.getAll()).extracting(u -> u.getName())
+                .containsExactly("different name");
 
     }
 

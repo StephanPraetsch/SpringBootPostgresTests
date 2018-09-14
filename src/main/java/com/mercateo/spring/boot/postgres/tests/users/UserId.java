@@ -9,7 +9,7 @@ import lombok.Value;
 public class UserId {
 
     @NonNull
-    UUID value;
+    UUID id;
 
     public static UserId fromString(@NonNull String value) {
         return new UserId(UUID.fromString(value));
@@ -17,7 +17,7 @@ public class UserId {
 
     @Override
     public String toString() {
-        return value.toString();
+        return id.toString();
     }
 
 }

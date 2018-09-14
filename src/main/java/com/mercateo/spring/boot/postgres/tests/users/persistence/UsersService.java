@@ -24,7 +24,7 @@ public class UsersService {
     }
 
     public Optional<UserDto> getFor(@NonNull UserId id) {
-        return users.findById(id.getValue());
+        return users.findById(id.getId());
     }
 
     public void update(@NonNull User user) {
