@@ -151,7 +151,7 @@ public class UsersResourceTest {
 
         // when
         ResponseEntity<String> response = restTemplate.postForEntity(
-                "/api/addresses/00000000-0000-0000-0000-000000000000",
+                "/users/00000000-0000-0000-0000-000000000000",
                 json,
                 String.class,
                 Collections.emptyMap());
