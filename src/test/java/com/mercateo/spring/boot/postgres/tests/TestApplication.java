@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Profile;
 @SpringBootApplication( //
         exclude = {}, //
         scanBasePackages = { "com.mercateo.spring.boot.postgres.tests.*" })
-@Import(value = { ApplicationConfiguration.class })
+@Import(value = { ApplicationConfiguration.class, JerseyConfiguration.class })
 public interface TestApplication {
 
 }
