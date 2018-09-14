@@ -2,6 +2,7 @@ package com.mercateo.spring.boot.postgres.tests.users.rest;
 
 import java.time.OffsetDateTime;
 
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -23,7 +24,7 @@ class UpdateUserJson implements IdProvider<UserId> {
     @NotNull
     private final String name;
 
-    @NotNull
+    @Nullable
     private final OffsetDateTime birth;
 
     User toUser() {

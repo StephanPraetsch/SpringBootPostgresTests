@@ -14,6 +14,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
@@ -65,10 +67,12 @@ public class UsersResourceTest {
                 Collections.emptyMap());
     }
 
-    private void put(UpdateUserJson json) {
-        restTemplate.put(
+    private ResponseEntity<String> put(UpdateUserJson json) {
+        return restTemplate.exchange(
                 "/users/" + json.getId().getId(),
-                json);
+                HttpMethod.PUT,
+                new HttpEntity<>(json),
+                String.class);
     }
 
     private ResponseEntity<ResponseUserJson> get(UserId id) {
@@ -147,9 +151,12 @@ public class UsersResourceTest {
         userService.create(user);
 
         // when
-        put(UpdateUserJson.builder().id(id).name("different name").build());
+        ResponseEntity<String> response = put(UpdateUserJson.builder()
+                .id(id).name("different name").build());
 
         // then
+        assertThat(response.getStatusCode()).as(response.getBody())
+                .isEqualTo(HttpStatus.OK);
         assertThat(userService.getAll()).extracting(u -> u.getName())
                 .containsExactly("different name");
 
