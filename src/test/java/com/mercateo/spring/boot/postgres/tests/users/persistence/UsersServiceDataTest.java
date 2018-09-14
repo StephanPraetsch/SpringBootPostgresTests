@@ -17,7 +17,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.mercateo.spring.boot.postgres.tests.EmbeddedPostgresJpaTest;
-import com.mercateo.spring.boot.postgres.tests.users.User;
 import com.mercateo.spring.boot.postgres.tests.users.UserId;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,21 +29,19 @@ public class UsersServiceDataTest {
     @Autowired
     private UsersRepo users;
 
-    private final UserId id = new UserId(UUID.fromString("1-1-1-1-1"));
-
-    private final OffsetDateTime birth = OffsetDateTime.of(2018, 9, 13, 17, 15, 33, 0,
-            ZoneOffset.UTC);
-
-    private final User user = new User(id, "name", birth);
-
     @Before
     public void init() {
         initMocks(this);
         uut = new UsersService(users);
     }
 
-    private UserDto userDto(int i, String name) {
-        return new UserDto(UUID.fromString(i + "-" + i + "-" + i + "-" + i + "-" + i), name, birth);
+    private UserId userId(int i) {
+        return new UserId(UUID.fromString(i + "-" + i + "-" + i + "-" + i + "-" + i));
+    }
+
+    private UserDto userDto(UserId userId, String name) {
+        OffsetDateTime birth = OffsetDateTime.of(2018, 9, 13, 17, 15, 33, 0, ZoneOffset.UTC);
+        return new UserDto(userId.getValue(), name, birth);
     }
 
     @Test
@@ -64,7 +61,8 @@ public class UsersServiceDataTest {
     public void testGetAll() throws Exception {
 
         // given
-        UserDto userDto = userDto(1, "getAll");
+        UserId id = userId(1);
+        UserDto userDto = userDto(id, "getAll");
         users.save(userDto);
 
         // when
@@ -79,6 +77,7 @@ public class UsersServiceDataTest {
     public void testGetFor_not_found() throws Exception {
 
         // given
+        UserId id = userId(2);
 
         // when
         Optional<UserDto> result = uut.getFor(id);
@@ -92,7 +91,8 @@ public class UsersServiceDataTest {
     public void testGetFor() throws Exception {
 
         // given
-        UserDto userDto = userDto(2, "getFor");
+        UserId id = userId(1);
+        UserDto userDto = userDto(id, "getFor");
         users.save(userDto);
 
         // when
@@ -107,15 +107,16 @@ public class UsersServiceDataTest {
     public void testUpdate() throws Exception {
 
         // given
-        UserDto userDto = userDto(3, "update");
+        UserId id = userId(1);
+        UserDto userDto = userDto(id, "update");
         users.save(userDto);
         userDto.setName("new name");
 
         // when
-        uut.update(user);
+        uut.update(userDto.toUser());
 
         // then
-        assertThat(users.findById(userDto.getId())).isEqualTo(userDto);
+        assertThat(users.findById(userDto.getId())).contains(userDto);
 
     }
 
@@ -123,13 +124,14 @@ public class UsersServiceDataTest {
     public void testCreate() throws Exception {
 
         // given
-        UserDto userDto = userDto(4, "create");
+        UserId id = userId(1);
+        UserDto userDto = userDto(id, "create");
 
         // when
-        uut.create(user);
+        uut.create(userDto.toUser());
 
         // then
-        assertThat(users.findById(userDto.getId())).isEqualTo(userDto);
+        assertThat(users.findById(userDto.getId())).contains(userDto);
 
     }
 
