@@ -9,10 +9,12 @@ import com.mercateo.rest.jersey.utils.listing.IdProvider;
 import com.mercateo.spring.boot.postgres.tests.users.User;
 import com.mercateo.spring.boot.postgres.tests.users.UserId;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Builder
 class UpdateUserJson implements IdProvider<UserId> {
 
     @NotNull

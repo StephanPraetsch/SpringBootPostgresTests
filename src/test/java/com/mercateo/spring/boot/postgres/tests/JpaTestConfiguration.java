@@ -14,15 +14,11 @@ public class JpaTestConfiguration {
 
     @Bean
     public DataSource dataSource() throws Exception {
-
         configureJacksonForHibernate();
-
-        return EmbeddedPostgres
-                .builder().start().getTemplateDatabase();
+        return EmbeddedPostgres.builder().start().getTemplateDatabase();
     }
 
     private void configureJacksonForHibernate() {
-
         JacksonUtil.OBJECT_MAPPER.registerModule(new JavaTimeModule());
     }
 
