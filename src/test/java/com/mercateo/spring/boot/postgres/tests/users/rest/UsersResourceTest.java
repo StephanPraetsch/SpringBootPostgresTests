@@ -43,6 +43,8 @@ public class UsersResourceTest {
     @Inject
     private UsersService userService;
 
+    private UserId userId = new UserId(UUID.fromString("1-1-1-1-2")); 
+
     @After
     public void after() {
         resetHeaders();
@@ -54,7 +56,7 @@ public class UsersResourceTest {
 
     private CreateUserJson createJson(String name) {
         return CreateUserJson.builder()
-                .id(UUID.fromString("1-1-1-1-1"))
+                .id(userId.getId())
                 .name(name)
                 .birth(OffsetDateTime.of(2018, 9, 14, 12, 10, 51, 0, ZoneOffset.UTC))
                 .build();
@@ -137,16 +139,15 @@ public class UsersResourceTest {
     public void test_get() throws Exception {
 
         // given
-        UserId id = new UserId(UUID.fromString("1-1-1-1-2"));
-        User user = new User(id, "test_get", OffsetDateTime.now());
+        User user = new User(userId, "test_get", OffsetDateTime.now());
         userService.create(user);
 
         // when
-        ResponseEntity<ResponseUserJson> response = get(id);
+        ResponseEntity<ResponseUserJson> response = get(userId);
 
         // then
         assertThat(response.getBody())
-                .isEqualTo(new ResponseUserJson(id.getId(), "test_get"));
+                .isEqualTo(new ResponseUserJson(userId.getId(), "test_get"));
 
     }
 
@@ -155,13 +156,12 @@ public class UsersResourceTest {
     public void test_update() throws Exception {
 
         // given
-        UserId id = new UserId(UUID.fromString("1-1-1-1-2"));
-        User user = new User(id, "test_update", OffsetDateTime.now());
+        User user = new User(userId, "test_update", OffsetDateTime.now());
         userService.create(user);
 
         // when
         ResponseEntity<String> response = put(UpdateUserJson.builder()
-                .id(id).name("different name").build());
+                .id(userId).name("different name").build());
 
         // then
         assertThat(response.getStatusCode()).as(response.getBody())
