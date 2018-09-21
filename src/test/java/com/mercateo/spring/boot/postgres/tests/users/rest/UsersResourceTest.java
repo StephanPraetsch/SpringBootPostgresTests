@@ -8,21 +8,27 @@ import java.util.Collections;
 import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Table;
 
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.mercateo.spring.boot.postgres.tests.EmbeddedPostgresForWebTest;
+import com.mercateo.spring.boot.postgres.tests.JpaTestConfiguration;
 import com.mercateo.spring.boot.postgres.tests.TestApplication;
 import com.mercateo.spring.boot.postgres.tests.users.User;
 import com.mercateo.spring.boot.postgres.tests.users.UserId;
@@ -31,11 +37,19 @@ import com.mercateo.spring.boot.postgres.tests.users.persistence.UsersService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
 @SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EmbeddedPostgresForWebTest
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
+@TestPropertySource(locations = "classpath:application-test.properties")
+@Import(JpaTestConfiguration.class)
 public class UsersResourceTest {
+
+    @Inject
+    EntityManager entityManager;
+
+    @Inject
+    private JdbcTemplate jdbcTemplate;
 
     @Inject
     private TestRestTemplate restTemplate;
@@ -46,6 +60,16 @@ public class UsersResourceTest {
     @After
     public void after() {
         resetHeaders();
+        // should consider a better solution here
+        jdbcTemplate.execute("DELETE FROM USERS");
+
+    }
+
+    private void truncateTables() {
+        entityManager.getMetamodel().getEntities().stream()
+                .map(entityType -> entityType.getJavaType().getAnnotation(Table.class).name())
+                .map(tableName -> "TRUNCATE TABLE " + tableName)
+                .forEach(query -> entityManager.createNativeQuery(query).executeUpdate());
     }
 
     private void resetHeaders() {
@@ -91,7 +115,6 @@ public class UsersResourceTest {
     }
 
     @Test
-    @DirtiesContext
     public void test_get_users() throws Exception {
 
         // given
@@ -107,7 +130,6 @@ public class UsersResourceTest {
     }
 
     @Test
-    @DirtiesContext
     public void test_create() throws Exception {
 
         // given
@@ -133,7 +155,6 @@ public class UsersResourceTest {
     }
 
     @Test
-    @DirtiesContext
     public void test_get() throws Exception {
 
         // given
@@ -151,7 +172,6 @@ public class UsersResourceTest {
     }
 
     @Test
-    @DirtiesContext
     public void test_update() throws Exception {
 
         // given
@@ -172,7 +192,6 @@ public class UsersResourceTest {
     }
 
     @Test
-    @DirtiesContext
     public void test_create_twice_the_same() throws Exception {
 
         // given
@@ -191,7 +210,6 @@ public class UsersResourceTest {
     }
 
     @Test
-    @DirtiesContext
     public void test_create_id_in_path_differs_from_json() throws Exception {
 
         // given

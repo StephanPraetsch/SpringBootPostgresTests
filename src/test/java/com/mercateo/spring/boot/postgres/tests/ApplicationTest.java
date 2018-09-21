@@ -14,7 +14,6 @@ import com.mercateo.spring.boot.postgres.tests.users.persistence.UsersService;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 @SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EmbeddedPostgresForWebTest
 public class ApplicationTest {
 
     @Autowired
