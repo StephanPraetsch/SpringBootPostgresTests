@@ -3,6 +3,9 @@ package com.mercateo.spring.boot.postgres.tests.users.persistence;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+import com.mercateo.spring.boot.postgres.tests.users.UserId;
+
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -10,19 +13,57 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.testcontainers.containers.PostgreSQLContainer;
 
-import com.mercateo.spring.boot.postgres.tests.EmbeddedPostgresJpaTest;
-import com.mercateo.spring.boot.postgres.tests.users.UserId;
-
+@Ignore("https://github.com/testcontainers/testcontainers-java/issues/712")
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
-@EmbeddedPostgresJpaTest
+@ContextConfiguration(initializers = { UsersServiceDataTest.Initializer.class })
 public class UsersServiceDataTest {
+
+    @ClassRule
+    public static PostgreSQLContainer postgreSQLContainer =
+
+            (PostgreSQLContainer) new PostgreSQLContainer("postgres:10.4")
+
+                    .withDatabaseName("sampledb")
+
+                    .withUsername("sampleuser")
+
+                    .withPassword("samplepwd")
+
+                    .withStartupTimeout(Duration.ofSeconds(600));
+
+    static class Initializer
+
+            implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+
+        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+
+            TestPropertyValues.of(
+
+                    "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
+
+                    "spring.datasource.username=" + postgreSQLContainer.getUsername(),
+
+                    "spring.datasource.password=" + postgreSQLContainer.getPassword()
+
+            ).applyTo(configurableApplicationContext.getEnvironment());
+
+        }
+
+    }
 
     private UsersService uut;
 
